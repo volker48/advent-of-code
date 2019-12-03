@@ -4,10 +4,10 @@ import scala.collection.mutable.ListBuffer
 
 sealed case class Opcode(code: Int)
 
-class Program(opcode: Opcode,
-              xIndex: Int = 0,
-              yIndex: Int = 0,
-              destIndex: Int = 0) {
+class Instruction(opcode: Opcode,
+                  xIndex: Int = 0,
+                  yIndex: Int = 0,
+                  destIndex: Int = 0) {
   def apply(memory: ListBuffer[Int]): Unit = {
     val x = memory(xIndex)
     val y = memory(yIndex)
@@ -21,7 +21,7 @@ class Program(opcode: Opcode,
 object Program {
 
   @scala.annotation.tailrec
-  def execute(instructions: List[Program], memory: ListBuffer[Int]): Int = {
+  def execute(instructions: List[Instruction], memory: ListBuffer[Int]): Int = {
     instructions match {
       case instruction :: Nil =>
         instruction(memory)
@@ -33,13 +33,15 @@ object Program {
   }
 
   @scala.annotation.tailrec
-  def fromRaw(raw: List[Int],
-              acc: ListBuffer[Program] = ListBuffer.empty): List[Program] = {
+  def fromRaw(
+    raw: List[Int],
+    acc: ListBuffer[Instruction] = ListBuffer.empty
+  ): List[Instruction] = {
     raw match {
       case 99 :: _ =>
         acc.toList
       case op :: xIndex :: yIndex :: destIndex :: rest =>
-        acc += new Program(Opcode(op), xIndex, yIndex, destIndex)
+        acc += new Instruction(Opcode(op), xIndex, yIndex, destIndex)
         fromRaw(rest, acc)
     }
   }
