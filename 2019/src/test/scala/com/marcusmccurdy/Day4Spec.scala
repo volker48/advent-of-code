@@ -18,7 +18,7 @@ class Day4Spec extends UnitSpec {
     Day4.adjacentSame(digits) shouldBe false
   }
 
-  "adjacentSame" should "return list bool" in {
+  "adjacentSame 1234" should "return true" in {
     val digits = Day4.toDigits(12344)
     Day4.adjacentSame(digits) shouldBe true
   }

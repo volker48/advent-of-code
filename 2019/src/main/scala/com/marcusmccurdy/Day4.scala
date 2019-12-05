@@ -1,8 +1,5 @@
 package com.marcusmccurdy
 
-import scala.annotation.tailrec
-import scala.collection.mutable.ListBuffer
-
 object Day4 extends App {
 
   @scala.annotation.tailrec
@@ -15,20 +12,12 @@ object Day4 extends App {
     }
   }
   @scala.annotation.tailrec
-  def adjacentSame(password: List[Int],
-                   acc: List[Boolean] = List.empty[Boolean]): Boolean = {
-    def getBool(l: List[Boolean]) = {
-      l.dropWhile(p => !p).headOption match {
-        case None    => false
-        case Some(p) => p
-      }
-    }
+  def adjacentSame(password: List[Int], acc: Boolean = false): Boolean = {
     password match {
-      case Nil      => getBool(matches)
-      case _ :: Nil => getBool(matches)
+      case Nil      => acc
+      case _ :: Nil => acc
       case l :: r :: rest =>
-        val same = l == r
-        adjacentSame(r :: rest, same :: matches)
+        adjacentSame(r :: rest, acc || (l == r))
     }
   }
   def pairsIncreasing(digits: List[Int]): Boolean = {
@@ -51,6 +40,6 @@ object Day4 extends App {
 
   val passwords = 372037 to 905157
   // bad guess 533121
-  println(passwords.map(validPassword).size)
+  println(passwords.map(validPassword).count(p => p))
 
 }
