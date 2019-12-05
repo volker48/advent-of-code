@@ -51,16 +51,16 @@ object Day3 extends App {
       .map(p => new Vec(p.head.toString, p.tail.toInt))
       .toList
 
-  val points1 = createPoints(line1)
-  val points2 = createPoints(line2)
-
-  val lines1 = createLines(points1.tail, points1.head)
-  val lines2 = createLines(points2.tail, points2.head)
-
-  println(lines1)
-  println(lines1.length)
-  println(lines2)
-  println(lines2.length)
+  var grid = updateGrid(line1, "1")
+  grid = updateGrid(line2, "2", grid)
+  println(
+    grid
+      .filter { case (_, v) => v.size > 1 }
+      .keys
+      .map(p => p.x.abs + p.y.abs)
+      .toList
+      .sorted
+  )
 
   def updateGrid(p: Point, grid: Grid, lineId: String): Grid = {
     val idSet = grid get p match {
@@ -69,27 +69,19 @@ object Day3 extends App {
     }
     grid + (p -> idSet)
   }
-  @scala.annotation.tailrec
-  def createLines(
-    points: List[Point],
-    prev: Point,
-    acc: ListBuffer[Line] = ListBuffer.empty[Line]
-  ): ListBuffer[Line] = {
-    points match {
-      case Nil       => acc
-      case p :: rest => createLines(rest, p, acc += Line(prev, p))
-    }
-  }
 
-  def createPoints(paths: List[Vec]): List[Point] = {
+  def updateGrid(paths: List[Vec],
+                 lineId: String,
+                 grid: Grid = Map.empty[Point, Set[String]]): Grid = {
     @scala.annotation.tailrec
-    def iter(paths: List[Vec], lines: ListBuffer[Point]): List[Point] = {
+    def iter(paths: List[Vec], lines: ListBuffer[Point], grid: Grid): Grid = {
       val prev = lines.last
       paths match {
-        case Nil       => lines.toList
-        case v :: rest => iter(rest, lines += v.toPoint(prev))
+        case Nil => grid
+        case v :: rest =>
+          iter(rest, lines += v.toPoint(prev), v.toPoints(prev, grid, lineId))
       }
     }
-    iter(paths, ListBuffer[Point](Point(0, 0)))
+    iter(paths, ListBuffer[Point](Point(0, 0)), grid)
   }
 }
