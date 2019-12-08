@@ -56,4 +56,36 @@ class Day4Spec extends UnitSpec {
   "372037" should "be invalid" in {
     Day4.validPassword(372037) shouldBe false
   }
+  "11111" should "be invalid" in {
+    Day4.validPassword2(1111) shouldBe false
+  }
+
+  "123444" should "be invalid" in {
+    Day4.validPassword2(123444) shouldBe false
+  }
+
+  "111122" should "be valid pairsIncreasingStrict" in {
+    val digits = Day4.toDigits(111122)
+    Day4.adjacentSameStrict(digits) shouldBe true
+  }
+
+  "1111222" should "be invalid pairsIncreasing" in {
+    val digits = Day4.toDigits(1111222)
+    Day4.adjacentSameStrict(digits) shouldBe false
+  }
+
+  "111224" should "be valid pairsIncreasing" in {
+    val digits = Day4.toDigits(111224)
+    Day4.adjacentSameStrict(digits) shouldBe true
+  }
+
+  "112224" should "be valid pairsIncreasing" in {
+    val digits = Day4.toDigits(112224)
+    Day4.adjacentSameStrict(digits) shouldBe true
+  }
+
+  "223456" should "be valid pairsIncreasing" in {
+    val digits = Day4.toDigits(223456)
+    Day4.adjacentSameStrict(digits) shouldBe true
+  }
 }
