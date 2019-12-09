@@ -46,7 +46,8 @@ class Instruction(val opcode: Opcode, val parameters: Parameter*) {
         memory(parameters(0).value) = readLine("opcode 3 input: ").toInt
         None
       case Opcode(4) =>
-        println(memory(parameters(0).value))
+        val value = parameters(0)(memory)
+        println(value)
         None
       case Opcode(5) =>
         if (parameters(0)(memory) != 0) {
@@ -63,14 +64,14 @@ class Instruction(val opcode: Opcode, val parameters: Parameter*) {
         if (parameters(0)(memory) < parameters(1)(memory)) {
           result = 1
         }
-        memory(parameters(2)(memory)) = result
+        memory(parameters(2).value) = result
         None
       case Opcode(8) =>
         var result = 0
         if (parameters(0)(memory) == parameters(1)(memory)) {
           result = 1
         }
-        memory(parameters(2)(memory)) = result
+        memory(parameters(2).value) = result
         None
     }
 
@@ -109,8 +110,7 @@ object Program {
   }
 
   def parseInstruction(raw: Array[Int], instPtr: Int): (Instruction, Int) = {
-    val op = raw(instPtr)
-    op match {
+    raw(instPtr) match {
       case 99 => (new Instruction(Opcode(99)), 1)
       case opParams =>
         val op = opParams % 10
@@ -129,7 +129,10 @@ object Program {
             )
           case 3 | 4 =>
             (
-              new Instruction(Opcode(op), new Parameter(raw(instPtr + 1))),
+              new Instruction(
+                Opcode(op),
+                new Parameter(raw(instPtr + 1), param1Mode)
+              ),
               instPtr + 2
             )
           case 5 | 6 =>

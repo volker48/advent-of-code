@@ -53,3 +53,5 @@ answers.
 I had the order of the tuple for `zipWithIndex` reversed, but it makes sense
 that the index is the second element of the tuple since the method is named 
 `zipWITHINDEX`.
+
+In part 2 I had an index error because ranges 0 to N are inclusive on both ends.

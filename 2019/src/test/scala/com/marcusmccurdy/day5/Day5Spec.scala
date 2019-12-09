@@ -1,11 +1,11 @@
-package com.marcusmccurdy
+package com.marcusmccurdy.day5
 
-import com.marcusmccurdy.day5.{Opcode, Parameter, Instruction}
+import com.marcusmccurdy.UnitSpec
 
 class Day5Spec extends UnitSpec {
 
   "parseInstructions" should "stop on 99" in {
-    day5.Program.parseInstruction(Array(99), 0) should equal(
+    Program.parseInstruction(Array(99), 0) should equal(
       new Instruction(Opcode(99)),
       1
     )
@@ -13,7 +13,7 @@ class Day5Spec extends UnitSpec {
 
   "parseInstruction" should "work for add" in {
     val (instruction, _) =
-      day5.Program.parseInstruction(Array(1, 1, 2, 3, 99), 0)
+      Program.parseInstruction(Array(1, 1, 2, 3, 99), 0)
     instruction should equal(
       new Instruction(
         Opcode(1),
@@ -29,14 +29,14 @@ class Day5Spec extends UnitSpec {
   }
 
   "parseInstructions" should "work for opcode 3" in {
-    val (instruction, _) = day5.Program.parseInstruction(Array(3, 50, 99), 0)
+    val (instruction, _) = Program.parseInstruction(Array(3, 50, 99), 0)
     instruction.opcode shouldBe Opcode(3)
     instruction.parameters should have length 1
     instruction.parameters.head.value shouldBe 50
   }
   "parseInstruction" should "work for add with immediate mode params" in {
     val (instruction, _) =
-      day5.Program.parseInstruction(Array(1101, 2, 2, 3, 99), 0)
+      Program.parseInstruction(Array(1101, 2, 2, 3, 99), 0)
     instruction.opcode shouldBe Opcode(1)
     instruction.parameters should have length 3
     instruction.parameters(0).mode shouldBe 1
@@ -44,25 +44,25 @@ class Day5Spec extends UnitSpec {
   }
   "instructions with position mode" should "run" in {
     val memory = Array(1, 5, 6, 0, 99, 15, 15)
-    day5.Program.execute(memory)
+    Program.execute(memory)
     memory(0) shouldBe 30
   }
 
   "instructions with immediate mode" should "run" in {
     val memory = Array(1101, 2, 2, 3, 99)
-    day5.Program.execute(memory)
+    Program.execute(memory)
     memory(3) shouldBe 4
   }
 
   "multiply with immediate mode" should "run" in {
     val memory = Array(1102, 2, 3, 3, 99)
-    day5.Program.execute(memory, 0)
+    Program.execute(memory, 0)
     memory(3) shouldBe 6
   }
 
   "two instructions" should "run" in {
     val memory = Array(1102, 2, 3, 0, 1001, 0, -7, 1, 4, 1, 99)
-    day5.Program.execute(memory)
+    Program.execute(memory)
     memory(1) shouldBe -1
   }
 }
