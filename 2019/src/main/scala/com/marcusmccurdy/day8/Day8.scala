@@ -65,10 +65,10 @@ object Day8 extends App {
     val visible = layers.dropWhile(l => l.pixels(row)(col) == '2')
     visible match {
       case Nil => ' '
-      case head :: tail =>
+      case head :: _ =>
         head.pixels(row)(col) match {
           case '0' => ' '
-          case '1' => 'x'
+          case '1' => '*'
         }
     }
   }
