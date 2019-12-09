@@ -48,3 +48,8 @@ When going up or down the X is static and when going left or right the Y is stat
 Day 4 seemed much easier than Day 3. I ended up writing quite a few unit tests
 for this day to check some edge cases I was hitting causing me to get incorrect
 answers.
+
+### Day 8
+I had the order of the tuple for `zipWithIndex` reversed, but it makes sense
+that the index is the second element of the tuple since the method is named 
+`zipWITHINDEX`.

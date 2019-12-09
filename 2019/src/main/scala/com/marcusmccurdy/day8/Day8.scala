@@ -61,6 +61,25 @@ object Day8 extends App {
   val fewestZeros = layers(index)
   val part1 = fewestZeros.digitCounts('1') * fewestZeros.digitCounts('2')
 
+  def getColor(layers: List[Layer], row: Int, col: Int): Char = {
+    val visible = layers.dropWhile(l => l.pixels(row)(col) == '2')
+    visible match {
+      case Nil => ' '
+      case head :: tail =>
+        head.pixels(row)(col) match {
+          case '0' => ' '
+          case '1' => 'x'
+        }
+    }
+  }
+
   // 1573, too low
   println(part1)
+  for (row <- 0 to 5) {
+    var line = ""
+    for (col <- 0 to 24) {
+      line += getColor(layers, row, col)
+    }
+    println(line)
+  }
 }
