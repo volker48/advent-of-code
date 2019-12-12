@@ -1,6 +1,7 @@
 package com.marcusmccurdy.day5
 
 import com.marcusmccurdy.UnitSpec
+import com.marcusmccurdy.intcode.{Instruction, Opcode, Parameter, Program}
 
 class Day5Spec extends UnitSpec {
 
