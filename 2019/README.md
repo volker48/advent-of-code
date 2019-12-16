@@ -55,3 +55,13 @@ that the index is the second element of the tuple since the method is named
 `zipWITHINDEX`.
 
 In part 2 I had an index error because ranges 0 to N are inclusive on both ends.
+
+
+### Day 9
+I tried to be slick and extend `scala.collections.mutable.ArrayBuffer` for my
+memory implementation and override the `update` method to check if the 
+array needed to be resized. However, I quickly realized this wouldn't work because
+if the array needed to be extended I tried calling `append` in a loop to append
+zeros, but this would also call `update`. Instead, I ended up using composition instead
+of inheritance and created my own `Memory` class that contained an internal 
+ArrayBuffer.
