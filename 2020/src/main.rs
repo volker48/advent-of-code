@@ -1,8 +1,9 @@
-mod day1;
-
+mod day3;
 fn main() {
-    let (x, y) = day1::part1();
-    println!("part 1 {}", x*y);
-    let (x, y, z) = day1::part2();
-    println!("part 2 {}", x*y*z);
+    let total = day3::part1(1, 1)
+        * day3::part1(1, 3)
+        * day3::part1(1, 5)
+        * day3::part1(1, 7)
+        * day3::part1(2, 1);
+    println!("trees {}", total);
 }
