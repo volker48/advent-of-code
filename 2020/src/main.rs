@@ -1,4 +1,5 @@
-mod day4;
+mod day6;
+
 fn main() {
-    println!("{}", day4::part2("src/day4_input.txt"))
+    day6::part2("src/day6_input.txt");
 }
