@@ -1,5 +1,5 @@
-mod day6;
+mod day9;
 
 fn main() {
-    day6::part2("src/day6_input.txt");
+    println!("{}", day9::part2("src/day9_input.txt"));
 }
