@@ -1,5 +1,5 @@
-mod day7;
+mod day25;
 
 fn main() {
-    println!("{}", day7::part1("src/day7_input.txt"));
+    println!("loop_size: {}", day25::part1(12232269, 19452773));
 }
