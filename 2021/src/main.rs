@@ -9,5 +9,5 @@ mod day7;
 mod helpers;
 
 fn main() {
-    println!("{}", day7::part1());
+    println!("{}", day15::part1());
 }

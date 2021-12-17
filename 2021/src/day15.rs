@@ -46,10 +46,11 @@ fn relax(nodes: &mut HashMap<NodeID, Node>, u_id: NodeID, v_id: NodeID) -> () {
     }
 }
 
-pub fn blah() {
-    let raw = helpers::get_input("src/day15_test.txt");
+pub fn part1() -> i32 {
+    let raw = helpers::get_input("src/day15_input.txt");
     let columns: usize = raw[0].len();
     let rows: usize = raw.len();
+    println!("rows {} columns {}", rows, columns);
     let mut nodes: HashMap<NodeID, Node> = HashMap::new();
     for (y, line) in raw.into_iter().enumerate() {
         for (x, char) in line.chars().enumerate() {
@@ -59,6 +60,7 @@ pub fn blah() {
             nodes.insert(node_id, v);
         }
     }
+    println!("Nodes length {}", nodes.len());
     nodes.get_mut(&(0, 0)).unwrap().estimate = 0;
     let mut edges: Vec<Edge> = Vec::new();
     for y in 0..rows {
@@ -69,7 +71,7 @@ pub fn blah() {
                     v: (x + 1, y),
                 });
             }
-            if columns > 0 {
+            if x > 0 {
                 edges.push(Edge {
                     u: (x, y),
                     v: (x - 1, y),
@@ -89,7 +91,18 @@ pub fn blah() {
             }
         }
     }
-    for edge in edges {
-        relax(&mut nodes, edge.u, edge.v);
+    for _ in 0..nodes.len() {
+        for edge in &edges {
+            relax(&mut nodes, edge.u, edge.v);
+        }
     }
+
+    let mut pi = nodes.get(&(columns - 1, rows - 1)).unwrap().predecessor;
+    let mut risk = 0;
+    while let Vertex::NodeID(n) = pi {
+        let node = nodes.get(&n).unwrap();
+        risk += node.risk;
+        pi = node.predecessor;
+    }
+    risk
 }
