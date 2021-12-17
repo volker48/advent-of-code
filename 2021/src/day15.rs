@@ -12,8 +12,8 @@ enum Vertex {
 
 #[derive(Clone, Copy)]
 struct Edge {
-    u: Node,
-    v: Node,
+    u: NodeID,
+    v: NodeID,
 }
 
 #[derive(Clone, Copy)]
@@ -27,20 +27,22 @@ struct Node {
 impl Node {
     fn new(risk: i32, node_id: NodeID) -> Node {
         Node {
-            risk: risk,
+            risk,
             predecessor: Vertex::Nil,
             estimate: i32::MAX,
-            node_id: node_id,
+            node_id,
         }
     }
 }
 
-fn relax(nodes: HashMap<NodeID, Node>, u_id: NodeID, v_id: NodeID) {
-    let u = nodes.get(&u_id).unwrap();
+fn relax(nodes: &mut HashMap<NodeID, Node>, u_id: NodeID, v_id: NodeID) -> () {
     let v = nodes.get(&v_id).unwrap();
+    let u = nodes.get(&u_id).unwrap();
     if v.estimate > u.estimate + u.risk {
-        v.estimate = u.estimate + u.risk;
-        v.predecessor = Vertex::NodeID(u.node_id);
+        let mut new = Node::new(v.risk, v_id);
+        new.estimate = u.estimate + u.risk;
+        new.predecessor = Vertex::NodeID(u.node_id);
+        nodes.insert(v_id, new);
     }
 }
 
@@ -48,49 +50,46 @@ pub fn blah() {
     let raw = helpers::get_input("src/day15_test.txt");
     let columns: usize = raw[0].len();
     let rows: usize = raw.len();
-    let mut graph: Vec<Vec<Node>> = Vec::new();
     let mut nodes: HashMap<NodeID, Node> = HashMap::new();
     for (y, line) in raw.into_iter().enumerate() {
-        let mut row: Vec<Node> = Vec::new();
         for (x, char) in line.chars().enumerate() {
             let risk = char.to_digit(10).unwrap();
             let node_id = (x, y);
             let v = Node::new(risk as i32, node_id);
-            row.push(v);
-            nodes[&node_id] = v;
+            nodes.insert(node_id, v);
         }
-        graph.push(row);
     }
-    graph[0][0].estimate = 0;
+    nodes.get_mut(&(0, 0)).unwrap().estimate = 0;
     let mut edges: Vec<Edge> = Vec::new();
     for y in 0..rows {
         for x in 0..columns {
-            let u = &graph[y][x];
             if x + 1 < columns {
                 edges.push(Edge {
-                    u: Box::new(u),
-                    v: &graph[y][x + 1],
+                    u: (x, y),
+                    v: (x + 1, y),
                 });
             }
             if columns > 0 {
                 edges.push(Edge {
-                    u: Box::new(u),
-                    v: &graph[y][x - 1],
+                    u: (x, y),
+                    v: (x - 1, y),
                 });
             }
             if y + 1 < rows {
                 edges.push(Edge {
-                    u: Box::new(u),
-                    v: &graph[y + 1][x],
+                    u: (x, y),
+                    v: (x, y + 1),
                 });
             }
             if y > 0 {
                 edges.push(Edge {
-                    u: Box::new(u),
-                    v: &graph[y - 1][x],
+                    u: (x, y),
+                    v: (x, y - 1),
                 })
             }
         }
     }
-    for edge in edges {}
+    for edge in edges {
+        relax(&mut nodes, edge.u, edge.v);
+    }
 }
