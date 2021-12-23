@@ -62,6 +62,7 @@ pub fn part1() -> i32 {
     }
     println!("Nodes length {}", nodes.len());
     nodes.get_mut(&(0, 0)).unwrap().estimate = 0;
+    nodes.get_mut(&(0, 0)).unwrap().risk = 0;
     let mut edges: Vec<Edge> = Vec::new();
     for y in 0..rows {
         for x in 0..columns {
@@ -91,13 +92,11 @@ pub fn part1() -> i32 {
             }
         }
     }
-    for _ in 0..nodes.len() {
-        for edge in &edges {
-            relax(&mut nodes, edge.u, edge.v);
-        }
+    for edge in &edges {
+        relax(&mut nodes, edge.u, edge.v);
     }
 
-    let mut pi = nodes.get(&(columns - 1, rows - 1)).unwrap().predecessor;
+    let mut pi = Vertex::NodeID((columns - 1, rows - 1));
     let mut risk = 0;
     while let Vertex::NodeID(n) = pi {
         let node = nodes.get(&n).unwrap();
