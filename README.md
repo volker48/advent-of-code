@@ -12,4 +12,8 @@ Trying Rust this year. [Lessons learned](2020/README.md)
 
 ## [2021](https://github.com/volker48/advent-of-code/tree/master/2021)
 
-Using Rust again. [Lessons leanred](2021/README.md)
+Using Rust again. [Lessons learned](2021/README.md)
+
+## [2022](https://github.com/volker48/advent-of-code/tree/master/2022)
+
+I don't have a lot of time this year so I'm using Python.
